@@ -1,6 +1,7 @@
 import Navbar from './Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Todo from './Todo';
+import SignUp from './SignUp';
 
 function App() {
   return (
@@ -11,6 +12,9 @@ function App() {
             <Switch>
               <Route exact path="/">
                 <p>Hello World!</p>
+              </Route>
+              <Route exact path="/signup">
+                < SignUp />
               </Route>
               <Route exact path="/todo">
                 <Todo />

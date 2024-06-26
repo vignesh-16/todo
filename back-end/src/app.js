@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const Tasks = require('./model/Tasks');
+const Users = require('./model/Users');
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,9 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 const generalRoutes = require('./route/routes');
 app.use('/api/', generalRoutes);
+
+const userRoutes = require('./route/users');
+app.use('/users/', userRoutes);
 
 app.listen(port, ()=>{ 
     console.log('App running successfully!');

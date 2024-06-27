@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Routes
 const generalRoutes = require('./route/routes');
-app.use('/api/', generalRoutes);
+app.use('/api/tasks/', generalRoutes);
 
 const userRoutes = require('./route/users');
 app.use('/users/', userRoutes);

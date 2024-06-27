@@ -30,4 +30,17 @@ router.post('/addTask', async (req, res) => {
   }
 });
 
+// @route   GET api/tasks
+// @desc    Get completed tasks
+// @access  Public
+router.get('/getCompletedTasks', async (req, res) => {
+  try {
+    const tasks = await Task.find({ isCompleted : true });
+    res.json(tasks);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

@@ -11,7 +11,7 @@ user.get('/getusers', async(req, res)=>{
         res.json(allUsers);
     } catch (err) {
         console.log('Error: while fetching users from db: ',err);
-        return res.status(500).send('Server Error');
+        res.status(500).send('Server Error');
     }
 });
 
@@ -27,8 +27,21 @@ user.post('/adduser', (req,res)=>{
         res.json(userSaved);
     } catch (err) {
         console.log('Error: while adding user to db: ',err);
-        return res.status(500).send('Server Error');
+        res.status(500).send('Server Error');
     }
 });
+
+user.post('/isuser', async (req,res)=>{
+    try {
+        console.log('for post: ',req.body);
+        let userEmail = req.body.emailId;
+        console.log('got the email',userEmail,' ',typeof(userEmail));
+        let result = await users.findOne({ email : userEmail });
+        res.json(result); 
+    } catch (err) {
+        console.log('Error: while searching for user:',err);
+        res.status(500).send('Server Error')
+    }
+})
 
 module.exports = user;

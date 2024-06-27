@@ -1,7 +1,8 @@
 import Navbar from './Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Todo from './Todo';
 import SignUp from './SignUp';
+import SignIn from './SignIn';
+import UsersRoute from './UsersRoute';
 
 function App() {
   return (
@@ -11,16 +12,13 @@ function App() {
           <div className="page-content">
             <Switch>
               <Route exact path="/">
-                <p>Hello World!</p>
+                < SignIn />
               </Route>
               <Route exact path="/signup">
                 < SignUp />
               </Route>
-              <Route exact path="/todo">
-                <Todo />
-              </Route>
-              <Route exact path="/profile">
-                <h1>Implement Soon!</h1>
+              <Route path="/users/">
+                <UsersRoute />
               </Route>
               <Route path="*">
                 <h1>404!</h1>

@@ -30,11 +30,7 @@ const SignUp = () => {
        }).then((data)=>{
             console.log('Here is server response','color: blue; font-size: 20px',data)
        }).catch(err => {
-            if (err.name === "AbortError") {
-                console.warn('fetch operation aborted')
-            } else {
-                console.error('Error while fetching from json-server:',err.message)
-            }
+            console.error('Error while reading from server response:',err.message)
        })
     }
     return ( 

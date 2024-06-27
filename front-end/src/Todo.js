@@ -5,7 +5,7 @@ import useFetch from './useFetch';
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
-    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/getTasks');
+    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
     //const createStory = usePost('http://localhost:3001/tasks');
  
     const addTask = (e)=> {

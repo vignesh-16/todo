@@ -6,13 +6,13 @@ const UsersRoute = () => {
     return ( 
         <Router>
             <Switch>
-                <Route exact path={`${path}/:user/todo`} >
+                <Route exact path={`${path}:user/todo`} >
                     <Todo />
                 </Route>
-                <Route exact path={`${path}/:user/home`}>
+                <Route exact path={`${path}:user/home`}>
                     <p>Hello world!</p>
                 </Route>
-                <Route exact path={`${path}/:user/profile`}>
+                <Route exact path={`${path}:user/profile`}>
                     <h1>Implement Soon!</h1>
                 </Route>
                 <Route path="*">

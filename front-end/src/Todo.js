@@ -1,14 +1,14 @@
 import { useRef } from 'react';
 import { useState } from 'react';
 import useFetch from './useFetch';
+import usePost from './usePost';
 
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
-    //const createStory = usePost('http://localhost:3001/tasks');
- 
-    const addTask = (e)=> {
+    const postMethod = usePost('http://localhost:3003/api/tasks/addTask');
+    const addTask = async (e)=> {
         e.preventDefault();
         setTaskExits(false);
         console.log('These are the default tasks: ',tasks)
@@ -23,9 +23,13 @@ const Todo = () => {
             } 
         })
         if(! taskExists) {
-            const newTask = { id: tasks.length + 1, value: newTaskValue, isCompleted: false };
-            //createStory(newTask);
-            setTasks([...tasks, newTask]);
+            const newTask = { value: newTaskValue, isCompleted: false };
+            let response = await postMethod(newTask);
+            if(response.value === newTaskValue) {
+                setTasks([...tasks, newTask]);
+            } else {
+                console.log('%c Warn: Something went wrong!',response);
+            }
             taskInput.current.value = '';
         }
         console.log('These are the updated tasks: ',tasks)

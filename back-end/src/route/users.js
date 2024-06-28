@@ -35,7 +35,6 @@ user.post('/isuser', async (req,res)=>{
     try {
         console.log('for post: ',req.body);
         let userEmail = req.body.emailId;
-        console.log('got the email',userEmail,' ',typeof(userEmail));
         let result = await users.findOne({ email : userEmail });
         res.json(result); 
     } catch (err) {

@@ -19,13 +19,13 @@ router.get('/getTasks', async (req, res) => {
 // @desc    Add new task
 // @access  Public
 router.post('/addTask', async (req, res) => {
-  const { text } = req.body;
   try {
-    const newTask = new Task({ text });
+    const { value, isCompleted } = req.body;
+    const newTask = new Task({ value, isCompleted });
     const task = await newTask.save();
     res.json(task);
   } catch (err) {
-    console.error(err.message);
+    console.error('Server Error: ',err);
     res.status(500).send('Server Error');
   }
 });

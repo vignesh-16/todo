@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+const YourModel = mongoose.model('YourModel');
+
+YourModel.find({}, (err, docs) => {
+    if (err) {
+        // handle error
+        return;
+    }
+    
+    // Transform _id field
+    const transformedDocs = docs.map(doc => ({
+        id: doc._id.toString(), // or any other format you prefer
+        // other fields
+    }));
+
+    res.json(transformedDocs);
+});

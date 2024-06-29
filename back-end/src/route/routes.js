@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../model/Tasks');
 
-// @route   GET api/tasks
+// @route   GET api/tasks/getTasks
 // @desc    Get all tasks
 // @access  Public
 router.get('/getTasks', async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/getTasks', async (req, res) => {
   }
 });
 
-// @route   POST api/tasks
+// @route   POST api/tasks/addTask
 // @desc    Add new task
 // @access  Public
 router.post('/addTask', async (req, res) => {
@@ -30,7 +30,7 @@ router.post('/addTask', async (req, res) => {
   }
 });
 
-// @route   GET api/tasks
+// @route   GET api/tasks/getCompletedTasks
 // @desc    Get completed tasks
 // @access  Public
 router.get('/getCompletedTasks', async (req, res) => {
@@ -42,5 +42,32 @@ router.get('/getCompletedTasks', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route   PUT api/tasks/markCompleted
+// @desc    Mark tasks as completed
+// @access  Public
+router.put('/markCompleted',(req, res)=>{
+  try {
+    req.body.forEach(async(task) =>{
+      await Task.updateOne( {_id : task._id}, { 
+        'isCompleted' : task.isCompleted
+       } );
+    })
+  } catch (err) {
+    console.log('Error while updating tasks: ',err);
+    res.status(500).send('Server Error')
+  }
+})
+
+router.delete('/delete',(req,res)=>{
+  try {
+    req.body.forEach(async (task) => {
+      await Task.deleteOne({ _id : task._id });
+    })
+  } catch (err) {
+    console.log('Error while deleting document: ',err);
+    res.status(500).send('Server Error')
+  }
+})
 
 module.exports = router;

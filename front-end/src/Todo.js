@@ -2,12 +2,14 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import useFetch from './useFetch';
 import usePost from './usePost';
+import useDelete from './useDelete';
 
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
     const postMethod = usePost('http://localhost:3003/api/tasks/addTask');
+    const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
     const addTask = async (e)=> {
         e.preventDefault();
         setTaskExits(false);
@@ -23,7 +25,7 @@ const Todo = () => {
             } 
         })
         if(! taskExists) {
-            const newTask = { value: newTaskValue, isCompleted: false };
+            const newTask = { value: newTaskValue, isCompleted: false, isSelected: false };
             let response = await postMethod(newTask);
             if(response.value === newTaskValue) {
                 setTasks([...tasks, newTask]);
@@ -44,23 +46,34 @@ const Todo = () => {
         })
         setTasks(updatedTasks);
     }
-    const deleteSelected = ()=> {
+    const deleteSelected = (e)=> {
+        e.preventDefault();
         const updatedTasks = []
+        const forDelete = [];
+        console.log('Current tasks: ',tasks)
         tasks.forEach((task)=>{
             if(! task.isSelected) {
                 updatedTasks.push(task)
+            } else {
+                forDelete.push(task)
             }
+            deleteCall(forDelete);
         })
         setTasks(updatedTasks);
     }
-    const taskSelected = (taskId)=> {
-        const updatedTasks = tasks.map((task)=>{
-            if(task.id === taskId) {
+    const taskSelected = (e, taskId)=> {
+        e.preventDefault();
+        let updatedTasks = [...tasks];
+        updatedTasks.map((task)=>{
+            console.log('taskId: ',taskId+' task: ',task);
+            if(task._id === taskId) {
                 task.isSelected = !task.isSelected;
             }
             return task;
         })
+        console.log('These tasks are now selected by user: ',updatedTasks);
         setTasks(updatedTasks);
+        console.log('These tasks : ',tasks);
     }
     return (
         <section className="Todo-app">
@@ -69,7 +82,7 @@ const Todo = () => {
                 <input type="text" placeholder="Enter a task" ref={taskInput}></input>
                 <button onClick={(e)=>addTask(e)} >Add</button>
                 <button onClick={()=>markCompleted()} >Done</button>
-                <button onClick={()=>deleteSelected()} >Delete</button>
+                <button onClick={(e)=>{ console.log('Event recieved',e); deleteSelected(e) }} >Delete</button>
             </div>
 
             <div className='tasks-container'>
@@ -79,7 +92,7 @@ const Todo = () => {
                 tasks && 
                 tasks.map((task)=> (
                     <div className="task" key={task._id}>
-                        <input type="checkbox" onClick={()=>taskSelected(task._id)} checked={task.isSelected}></input>
+                        <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
                         <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
                     </div>
                 ))

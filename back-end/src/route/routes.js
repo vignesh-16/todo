@@ -59,11 +59,14 @@ router.put('/markCompleted',(req, res)=>{
   }
 })
 
-router.delete('/delete',(req,res)=>{
+router.delete('/delete/:id', async(req,res)=>{
   try {
-    req.body.forEach(async (task) => {
-      await Task.deleteOne({ _id : task._id });
-    })
+    let requestId = req.params.id
+    console.log('Delete request for Id: ',requestId);
+    let target = await Task.findById({ _id : requestId }, {_id : 1, value: 1});
+    console.log('Target task: ', target?.schema?.obj);
+    let deleteOperattion = await Task.findByIdAndDelete({  _id : requestId });
+    console.log('Delete status: ', deleteOperattion);
   } catch (err) {
     console.log('Error while deleting document: ',err);
     res.status(500).send('Server Error')

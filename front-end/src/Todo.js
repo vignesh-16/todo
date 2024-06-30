@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import useFetch from './useFetch';
 import usePost from './usePost';
@@ -57,24 +57,26 @@ const Todo = () => {
             } else {
                 forDelete.push(task)
             }
-            deleteCall(forDelete);
-        })
+        });
+        deleteCall(forDelete);
         setTasks(updatedTasks);
     }
     const taskSelected = (e, taskId)=> {
         e.preventDefault();
-        let updatedTasks = [...tasks];
-        updatedTasks.map((task)=>{
+        ;
+        let updatedTasks = tasks.map((task)=>{
             console.log('taskId: ',taskId+' task: ',task);
             if(task._id === taskId) {
-                task.isSelected = !task.isSelected;
+                return { ...task, isSelected: !task.isSelected };
             }
             return task;
         })
         console.log('These tasks are now selected by user: ',updatedTasks);
         setTasks(updatedTasks);
-        console.log('These tasks : ',tasks);
     }
+    useEffect(()=> {
+        console.log('Tasks are updated : ',tasks);
+    },[tasks])
     return (
         <section className="Todo-app">
             <h2>Your Tasks</h2>
@@ -92,7 +94,7 @@ const Todo = () => {
                 tasks && 
                 tasks.map((task)=> (
                     <div className="task" key={task._id}>
-                        <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
+                        <input type="checkbox" onClick={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
                         <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
                     </div>
                 ))

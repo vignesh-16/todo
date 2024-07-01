@@ -20,8 +20,8 @@ router.get('/getTasks', async (req, res) => {
 // @access  Public
 router.post('/addTask', async (req, res) => {
   try {
-    const { value, isCompleted } = req.body;
-    const newTask = new Task({ value, isCompleted });
+    const { _id, value, isCompleted } = req.body;
+    const newTask = new Task({ _id, value, isCompleted });
     const task = await newTask.save();
     res.json(task);
   } catch (err) {
@@ -44,15 +44,17 @@ router.get('/getCompletedTasks', async (req, res) => {
 });
 
 // @route   PUT api/tasks/markCompleted
-// @desc    Mark tasks as completed
+// @desc    Mark tasks (in bulk) as completed
 // @access  Public
 router.put('/markCompleted',(req, res)=>{
   try {
+    let isUpdated = {};
     req.body.forEach(async(task) =>{
-      await Task.updateOne( {_id : task._id}, { 
+      isUpdated = await Task.updateOne( { _id : task._id }, { 
         'isCompleted' : task.isCompleted
        } );
     })
+    res.json(isUpdated)
   } catch (err) {
     console.log('Error while updating tasks: ',err);
     res.status(500).send('Server Error')

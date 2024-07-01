@@ -3,6 +3,7 @@ import { useState } from 'react';
 import useFetch from './useFetch';
 import usePost from './usePost';
 import useDelete from './useDelete';
+import usePut from './usePut';
 
 const Todo = () => {
     const taskInput = useRef(null)
@@ -10,6 +11,8 @@ const Todo = () => {
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
     const postMethod = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
+    const bulkUpdate = usePut('http://localhost:3003/api/tasks/markCompleted');
+
     const addTask = async (e)=> {
         e.preventDefault();
         setTaskExits(false);
@@ -25,7 +28,7 @@ const Todo = () => {
             } 
         })
         if(! taskExists) {
-            const newTask = { value: newTaskValue, isCompleted: false, isSelected: false };
+            const newTask = { _id: tasks.length + 1, value: newTaskValue, isCompleted: false, isSelected: false };
             let response = await postMethod(newTask);
             if(response.value === newTaskValue) {
                 setTasks([...tasks, newTask]);
@@ -37,13 +40,17 @@ const Todo = () => {
         console.log('These are the updated tasks: ',tasks)
     }
     const markCompleted = ()=>{
+        let markCompleted = [];
         const updatedTasks = tasks.map((task)=>{
             if(task.isSelected) {
                 task.isCompleted = true;
                 task.isSelected = false;
+                markCompleted.push(task);
             }
             return task;
         })
+        let res = bulkUpdate(markCompleted);
+        console.log(res)
         setTasks(updatedTasks);
     }
     const deleteSelected = (e)=> {
@@ -62,16 +69,12 @@ const Todo = () => {
         setTasks(updatedTasks);
     }
     const taskSelected = (e, taskId)=> {
-        e.preventDefault();
-        ;
-        let updatedTasks = tasks.map((task)=>{
-            console.log('taskId: ',taskId+' task: ',task);
+        const updatedTasks = tasks.map((task)=>{
             if(task._id === taskId) {
-                return { ...task, isSelected: !task.isSelected };
+                task.isSelected = !task.isSelected;
             }
             return task;
         })
-        console.log('These tasks are now selected by user: ',updatedTasks);
         setTasks(updatedTasks);
     }
     useEffect(()=> {
@@ -94,7 +97,7 @@ const Todo = () => {
                 tasks && 
                 tasks.map((task)=> (
                     <div className="task" key={task._id}>
-                        <input type="checkbox" onClick={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
+                        <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
                         <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
                     </div>
                 ))

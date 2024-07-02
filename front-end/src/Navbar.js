@@ -5,18 +5,20 @@ console.log('%c here is the useParams: ', 'color: blue; font-size: 30px', usePar
 
 const Navbar = () => {
     let useLocationHook = useLocation();
-    let location = useLocationHook?.pathname?.replace('/', '');
+    let path = useLocationHook?.pathname;
+    let user = sessionStorage?.getItem('username');
+    let location = path.replace('/users/'+user+'/','').replace('/', '');
     if(location === '') {
-        location = 'Home';
+        location = 'Login';
     }
     console.log('%c here is the curr location: ', 'color: blue; font-size: 30px', useLocationHook);
     return ( 
         <nav className="navbar">
             <h1 className="captial-first">{location}</h1>
             <div className="links">
-                <Link to="/">Home</Link>
-                <Link to="/profile">Profile</Link>
-                <Link to="/todo">To Do</Link>
+                <Link to={`/users/${user}/home`}>Home</Link>
+                <Link to={`/users/${user}/profile`}>Profile</Link>
+                <Link to={`/users/${user}/todo`}>To Do</Link>
             </div>
         </nav>
      );

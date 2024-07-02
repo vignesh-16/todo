@@ -9,7 +9,7 @@ const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
-    const postMethod = usePost('http://localhost:3003/api/tasks/addTask');
+    const addCall = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
     const bulkUpdate = usePut('http://localhost:3003/api/tasks/markCompleted');
 
@@ -29,7 +29,7 @@ const Todo = () => {
         })
         if(! taskExists) {
             const newTask = { _id: tasks.length + 1, value: newTaskValue, isCompleted: false, isSelected: false };
-            let response = await postMethod(newTask);
+            let response = await addCall(newTask);
             if(response.value === newTaskValue) {
                 setTasks([...tasks, newTask]);
             } else {
@@ -87,7 +87,7 @@ const Todo = () => {
                 <input type="text" placeholder="Enter a task" ref={taskInput}></input>
                 <button onClick={(e)=>addTask(e)} >Add</button>
                 <button onClick={()=>markCompleted()} >Done</button>
-                <button onClick={(e)=>{ console.log('Event recieved',e); deleteSelected(e) }} >Delete</button>
+                <button onClick={(e)=>{ deleteSelected(e) }} >Delete</button>
             </div>
 
             <div className='tasks-container'>

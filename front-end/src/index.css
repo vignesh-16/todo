@@ -139,3 +139,35 @@ article div {
 .Todo-app .task button {
   margin-left: 10px;
 }
+
+.signin-section form, .signup-section form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 20px;
+    box-sizing: border-box;
+    div {
+      margin-bottom: 15px;
+    }
+    p {
+      margin-bottom: 5px;
+    }
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+}
+
+

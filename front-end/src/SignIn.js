@@ -34,6 +34,7 @@ const SignIn = () => {
     };
     useEffect(()=>{
         let username = signedUser?.firstname?.toLowerCase();
+        sessionStorage.setItem('username', username);
         let route = 'users/'+username+'/todo'
         username && reRoute(route);
     },[signedUser, reRoute])
@@ -46,7 +47,7 @@ const SignIn = () => {
                 </div>
                 <div className="password-box">
                     <p>Password: </p>
-                    <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="Enter a secure password" required></input>
+                    <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="your password" required></input>
                 </div>
                 <button>Log in</button>
             </form>

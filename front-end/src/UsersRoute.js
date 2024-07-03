@@ -1,18 +1,17 @@
-import { BrowserRouter as Router, Route, Switch, useRouteMatch  } from "react-router-dom/cjs/react-router-dom.min";
+import { BrowserRouter as Router, Route, Switch  } from "react-router-dom";
 import Todo from "./Todo";
 
 const UsersRoute = () => {
-    let { path } = useRouteMatch();
     return ( 
         <Router>
             <Switch>
-                <Route exact path={`${path}:user/todo`} >
+                <Route exact path='/users/:user/todo' >
                     <Todo />
                 </Route>
-                <Route exact path={`${path}:user/home`}>
+                <Route exact path='/users/:user/home'>
                     <p>Hello world!</p>
                 </Route>
-                <Route exact path={`${path}:user/profile`}>
+                <Route exact path='/users/:user/profile'>
                     <h1>Implement Soon!</h1>
                 </Route>
                 <Route path="*">

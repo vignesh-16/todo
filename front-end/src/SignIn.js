@@ -1,56 +1,50 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import usePost from "./usePost";
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [signedUser, setSignedUser] = useState({});
+    const signUserIn = usePost('http://localhost:3003/users/isuser')
     const forward = useHistory();
-
-    const userValidation = (e)=>{
-        e.preventDefault();
-        let userDetails = { emailId : email, password: pass };
-        fetch('http://localhost:3003/users/isuser',{
-            method : 'POST',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(userDetails)
-        }).then((res)=>{
-            if(!res.ok) {
-                console.log('%c Server Error: ','color: red; font-size: 20px',res.json())
-                throw Error('Bad response from server')
-            }
-            return res.json()
-       }).then((data)=>{
-            console.log('Here is server response','color: blue; font-size: 20px',data)
-            setSignedUser(data)
-       }).catch(err => {
-            console.error('Error while reading from server response:',err.message)
-       })
-    }
     const reRoute = (route)=> {
         forward.push(route)
     };
-    useEffect(()=>{
-        let username = signedUser?.firstname?.toLowerCase();
-        sessionStorage.setItem('username', username);
-        let route = 'users/'+username+'/todo'
-        username && reRoute(route);
-    },[signedUser, reRoute])
+
+    const userValidation = async(e)=>{
+        e.preventDefault();
+        let userDetails = { emailId : email, password: pass };
+        let validUser = await signUserIn(userDetails);
+        console.log('%c valid user: ','color: dark-blue; font-size: 20px', validUser);
+        if(validUser !== null && validUser !== undefined) {
+            setSignedUser(validUser)
+            let username = signedUser?.firstname?.toLowerCase();
+            sessionStorage.setItem('username', username);
+            let route = 'users/'+username+'/todo'
+            username && reRoute(route);
+        }
+    }
     return ( 
         <div className="signin-section">
-            <form onSubmit={ (e)=>{ userValidation(e) } }>
+            <section className="app-info">
+
+            </section>
+            <section>
                 <div className="email-address">
-                    <p>Username or Email: </p>
-                    <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="eg: john.wayne@gmail.com" required></input>
+                    <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Username  or email" required></input>
                 </div>
                 <div className="password-box">
-                    <p>Password: </p>
-                    <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="your password" required></input>
+                    <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="Enter your password" required></input>
                 </div>
-                <button>Log in</button>
-            </form>
+                <span>
+                    <a href="#" onClick={ ()=> { console.log('Forgot password clicked!!!') } } >Forgot password?</a>
+                </span>
+                <div className="login-signup-container">
+                    <button onClick={ (e)=>{ userValidation(e) } }>Log in</button>
+                    <button onClick={ ()=> {} }>Sign up</button>
+                </div>
+            </section>
         </div>
      );
 }

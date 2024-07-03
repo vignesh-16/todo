@@ -11,7 +11,7 @@ const Todo = () => {
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
     const addCall = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
-    const bulkUpdate = usePut('http://localhost:3003/api/tasks/markCompleted');
+    const updateCall = usePut('http://localhost:3003/api/tasks/markCompleted');
 
     const addTask = async (e)=> {
         e.preventDefault();
@@ -49,7 +49,7 @@ const Todo = () => {
             }
             return task;
         })
-        let res = bulkUpdate(markCompleted);
+        let res = updateCall(markCompleted);
         console.log(res)
         setTasks(updatedTasks);
     }

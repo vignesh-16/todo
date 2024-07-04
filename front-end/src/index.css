@@ -26,7 +26,7 @@
   text-decoration: none;
   padding: 6px;
 }
-.navbar a:hover {
+.navbar a:hover, .navbar span:hover {
   color: #3577f1;
 }
 .page-content {
@@ -184,6 +184,42 @@ article div {
 
 .login-signup-container {
   display: flex;
+}
+
+.user-name-display button {
+  border: none;
+  color: #333;
+  background-color: #fff;
+}
+
+.more-options {
+  position: relative;
+}
+
+.icon-name-container {
+  cursor: pointer;
+}
+
+.options-menu {
+  display: grid;
+  position: initial;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.options-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.options-menu li:hover {
+  background-color: #f0f0f0;
 }
 
 

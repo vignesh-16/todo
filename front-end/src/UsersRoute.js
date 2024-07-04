@@ -1,24 +1,24 @@
-import { BrowserRouter as Router, Route, Switch  } from "react-router-dom";
+import { Route, Switch  } from "react-router-dom";
 import Todo from "./Todo";
+import Home from "./Home";
+import Profile from "./Profile";
 
 const UsersRoute = () => {
     return ( 
-        <Router>
-            <Switch>
-                <Route exact path='/users/:user/todo' >
-                    <Todo />
-                </Route>
-                <Route exact path='/users/:user/home'>
-                    <p>Hello world!</p>
-                </Route>
-                <Route exact path='/users/:user/profile'>
-                    <h1>Implement Soon!</h1>
-                </Route>
-                <Route path="*">
+        <Switch>
+            <Route exact path='/users/:user/todo' >
+                < Todo />
+            </Route>
+            <Route exact path='/users/:user/home'>
+                < Home/>
+            </Route>
+            <Route exact path='/users/:user/profile'>
+                < Profile />
+            </Route>
+            <Route path="*">
                 <h1>No User found!</h1>
-              </Route>
-            </Switch>
-        </Router>
+            </Route>
+        </Switch>
      );
 }
  

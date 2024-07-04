@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import MoreOptions from "./MoreOptions";
 
 console.log('%c here is the useParams: ', 'color: blue; font-size: 30px', useParams);
 
@@ -17,8 +18,8 @@ const Navbar = () => {
             <h1 className="captial-first">{location}</h1>
             <div className="links">
                 <Link to={`/users/${user}/home`}>Home</Link>
-                <Link to={`/users/${user}/profile`}>Profile</Link>
                 <Link to={`/users/${user}/todo`}>To Do</Link>
+                < MoreOptions />
             </div>
         </nav>
      );

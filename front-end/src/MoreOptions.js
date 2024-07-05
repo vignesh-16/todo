@@ -11,7 +11,7 @@ const MoreOptions = () => {
     }
 
     return ( 
-        <span className="more-options">
+        <span className="navbar-option more-options">
             <span className="icon-name-container">
                 <p className="user-name-display">
                     <button onClick={ ()=>{ toggleDropdown() } }>{user}</button>
@@ -20,8 +20,8 @@ const MoreOptions = () => {
             {
                 isOpen && (
                     <ul className="options-menu">
-                        <Link to={`/users/${user}/profile`}>Profile</Link>
-                        <Link to={`/`}>Sign Out</Link>
+                        <li className="border-bottom" ><Link to={`/users/${user}/profile`}>Profile</Link></li>
+                        <li><Link to={`/`} onClick={ ()=>{ sessionStorage.removeItem('username') } } >Sign Out</Link></li>
                     </ul>
                 )
             }

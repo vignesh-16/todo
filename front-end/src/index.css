@@ -11,7 +11,7 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  max-width: 600px;
+  max-width: initial;
   margin: 0 auto;
   border-bottom: 1px solid #f2f2f2;
 }
@@ -19,9 +19,10 @@
   color: #f1356d;
 }
 .navbar .links {
-  margin-left: auto;
+  margin-left: 80%;
+  display: flex;
 }
-.navbar a {
+.navbar .navbar-option {
   margin-left: 16px;
   text-decoration: none;
   padding: 6px;
@@ -190,6 +191,7 @@ article div {
   border: none;
   color: #333;
   background-color: #fff;
+  font-size: 16px;
 }
 
 .more-options {
@@ -202,15 +204,16 @@ article div {
 
 .options-menu {
   display: grid;
-  position: initial;
+  position: absolute;
   top: 40px;
   right: 0;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   list-style: none;
-  padding: 0;
+  padding: 6px;
   margin: 0;
+  width: max-content;
 }
 
 .options-menu li {
@@ -222,4 +225,6 @@ article div {
   background-color: #f0f0f0;
 }
 
-
+.border-bottom {
+  border-bottom: 1px solid #f2f2f2;
+}

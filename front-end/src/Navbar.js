@@ -13,15 +13,21 @@ const Navbar = () => {
         location = 'Login';
     }
     console.log('%c here is the curr location: ', 'color: blue; font-size: 30px', useLocationHook);
-    return ( 
-        <nav className="navbar">
-            <h1 className="captial-first">{location}</h1>
-            <div className="links">
-                <Link to={`/users/${user}/home`}>Home</Link>
-                <Link to={`/users/${user}/todo`}>To Do</Link>
-                < MoreOptions />
-            </div>
-        </nav>
+    return (
+        <span>
+            {
+                user && (
+                    <nav className="navbar">
+                        <h1 className="captial-first">{location}</h1>
+                        <div className="links">
+                            <Link className='navbar-option' to={`/users/${user}/home`}>Home</Link>
+                            <Link className='navbar-option' to={`/users/${user}/todo`}>To Do</Link>
+                            < MoreOptions />
+                        </div>
+                    </nav>
+                )
+            }
+        </span>
      );
 }
  

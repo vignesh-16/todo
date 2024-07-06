@@ -177,14 +177,16 @@ article div {
       color: white;
       border: none;
       cursor: pointer;
+      border-radius: 0.6em;
     }
     button:hover {
       background-color: #0056b3;
     }
 }
 
-.login-signup-container {
+.login-helpers {
   display: flex;
+  justify-content: space-between;
 }
 
 .user-name-display button {

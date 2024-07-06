@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const MoreOptions = () => {
 
-    let user = sessionStorage.getItem('username') || 'User';
+    let user = sessionStorage.getItem('username');
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = ()=> {
@@ -14,7 +14,7 @@ const MoreOptions = () => {
         <span className="navbar-option more-options">
             <span className="icon-name-container">
                 <p className="user-name-display">
-                    <button onClick={ ()=>{ toggleDropdown() } }>{user}</button>
+                    <button className="captial-first" onClick={ ()=>{ toggleDropdown() } }>{user}</button>
                 </p>
             </span>
             {

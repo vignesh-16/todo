@@ -5,7 +5,6 @@ import usePost from "./usePost";
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [signedUser, setSignedUser] = useState({});
     const signUserIn = usePost('http://localhost:3003/users/isuser')
     const forward = useHistory();
     const reRoute = (route)=> {
@@ -18,11 +17,13 @@ const SignIn = () => {
         let validUser = await signUserIn(userDetails);
         console.log('%c valid user: ','color: dark-blue; font-size: 20px', validUser);
         if(validUser !== null && validUser !== undefined) {
-            setSignedUser(validUser)
-            let username = signedUser?.firstname?.toLowerCase();
+            let username = validUser?.firstname?.toLowerCase();
             sessionStorage.setItem('username', username);
+            console.log('%c Session set signing user in: ','color: dark-blue; font-size: 20px');
             let route = 'users/'+username+'/todo'
+            console.log('username: ',username,' route: ',route)
             username && reRoute(route);
+            console.log('%c Signing in successful: ','color: dark-blue; font-size: 20px');
         }
     }
     return ( 
@@ -31,18 +32,22 @@ const SignIn = () => {
 
             </section>
             <section>
-                <div className="email-address">
-                    <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Username  or email" required></input>
-                </div>
-                <div className="password-box">
-                    <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="Enter your password" required></input>
-                </div>
-                <span>
-                    <a href="#" onClick={ ()=> { console.log('Forgot password clicked!!!') } } >Forgot password?</a>
-                </span>
-                <div className="login-signup-container">
-                    <button onClick={ (e)=>{ userValidation(e) } }>Log in</button>
-                    <button onClick={ ()=> {} }>Sign up</button>
+                <form onSubmit={ (e)=>{ userValidation(e) } }>
+                    <div className="email-address">
+                        <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Username  or email" required></input>
+                    </div>
+                    <div className="password-box">
+                        <input type="password" onChange={(e) => setPass(e.target.value)} placeholder="Enter your password" required></input>
+                    </div>
+                    <div className="login-helpers">
+                        <span>
+                            <a href="/" onClick={ ()=> { console.log('Forgot password clicked!!!') } } >Forgot password?</a>
+                        </span>
+                        <button>Sign in</button>
+                    </div>
+                </form>
+                <div>
+                    <button>Sign up</button>
                 </div>
             </section>
         </div>

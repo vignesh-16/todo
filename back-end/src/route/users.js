@@ -1,6 +1,7 @@
 const express = require('express');
 const user = express.Router();
 const users = require('../model/Users');
+const documentId = require('shortid');
 
 // @route   GET users/getusers
 // @desc    get all users
@@ -18,13 +19,24 @@ user.get('/getusers', async(req, res)=>{
 // @route   POST users/adduser
 // @desc    create a new user
 // @access  Public
-user.post('/adduser', (req,res)=>{
+user.post('/adduser', async(req,res)=>{
     try{
         console.log('for post: ',req.body);
+        let userExists = await users.find({  email : req.body.email })
+        if (userExists?.[0]?.email) {
+            return res.status(409).json({
+                error: 'email already registered',
+                message: 'The given email id has already been registered with another account'
+            })
+        }
         const { firstname, lastname, email, password } = req.body;
         const newUser = new users({ firstname, lastname, email, password });
-        const userSaved = newUser.save();
-        res.json(userSaved);
+        const userSaved = await newUser.save();
+        let newAccount = await users.findOne({ email : req.body.email });
+        res.json({
+            queryResult: userSaved,
+            userAccount: newAccount,
+        });
     } catch (err) {
         console.log('Error: while adding user to db: ',err);
         res.status(500).send('Server Error');

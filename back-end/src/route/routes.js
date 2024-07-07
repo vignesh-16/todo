@@ -3,11 +3,11 @@ const router = express.Router();
 const Task = require('../model/Tasks');
 
 // @route   GET api/tasks/getTasks
-// @desc    Get all tasks
+// @desc    Get pending tasks
 // @access  Public
 router.get('/getTasks', async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ isCompleted : false });
     res.json(tasks);
   } catch (err) {
     console.error(err.message);
@@ -72,6 +72,19 @@ router.delete('/delete/:id', async(req,res)=>{
   } catch (err) {
     console.log('Error while deleting document: ',err);
     res.status(500).send('Server Error')
+  }
+})
+
+// @route   GET api/tasks/getCompletedTasks
+// @desc    Get all completed tasks
+// @access  Public
+router.get('/getCompletedTasks', async(req, res)=>{
+  try {
+    const tasks = await Task.find({ isCompleted : false });
+    res.json(tasks).message('Successfully fetched completed tasks!');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 })
 

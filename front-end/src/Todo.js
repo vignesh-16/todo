@@ -91,18 +91,18 @@ const Todo = () => {
             </div>
 
             <div className='tasks-container'>
-            { isLoading && <div>Please wait..</div> }
-            { serverError && <div>Error Retriving data</div> }
-            {
-                tasks && 
-                tasks.map((task)=> (
-                    <div className="task" key={task._id}>
-                        <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
-                        <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
-                    </div>
-                ))
-            }
-        </div>
+                { isLoading && <div>Please wait..</div> }
+                { serverError && <div>Error Retriving data</div> }
+                {
+                    tasks && 
+                    tasks.map((task)=> (
+                        <div className="task" key={task._id}>
+                            <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
+                            <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
+                        </div>
+                    ))
+                }
+            </div>
         </section>
     );
 }

@@ -21,6 +21,7 @@
 .navbar .links {
   margin-left: 80%;
   display: flex;
+  position: absolute;
 }
 .navbar .navbar-option {
   margin-left: 16px;

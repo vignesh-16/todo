@@ -20,7 +20,8 @@ const MoreOptions = () => {
             {
                 isOpen && (
                     <ul className="options-menu">
-                        <li className="border-bottom" ><Link to={`/users/${user}/profile`}>Profile</Link></li>
+                        <li className="border-bottom"><Link to={`/users/${user}/profile`}>Profile</Link></li>
+                        <li className="border-bottom"><Link to={`/users/${user}/completedTasks`}>Previous Tasks</Link></li>
                         <li><Link to={`/`} onClick={ ()=>{ sessionStorage.removeItem('username') } } >Sign Out</Link></li>
                     </ul>
                 )

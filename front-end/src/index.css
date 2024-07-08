@@ -179,10 +179,17 @@ article div {
       border: none;
       cursor: pointer;
       border-radius: 0.6em;
+      a {
+        color: white;
+      }
     }
     button:hover {
       background-color: #0056b3;
     }
+}
+
+.signup-section section {
+  height: 415px;
 }
 
 .login-helpers {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import usePost from "./usePost";
 
 const SignIn = () => {
@@ -14,16 +14,20 @@ const SignIn = () => {
     const userValidation = async(e)=>{
         e.preventDefault();
         let userDetails = { emailId : email, password: pass };
-        let validUser = await signUserIn(userDetails);
-        console.log('%c valid user: ','color: dark-blue; font-size: 20px', validUser);
-        if(validUser !== null && validUser !== undefined) {
-            let username = validUser?.firstname?.toLowerCase();
+        let checkUser = await signUserIn(userDetails);
+        console.log('%c valid user: ','color: dark-blue; font-size: 20px', checkUser);
+        if(checkUser.isUser && !checkUser.errType) {
+            let username = checkUser?.user?.firstname?.toLowerCase();
             sessionStorage.setItem('username', username);
             console.log('%c Session set signing user in: ','color: dark-blue; font-size: 20px');
             let route = 'users/'+username+'/todo'
             console.log('username: ',username,' route: ',route)
             username && reRoute(route);
             console.log('%c Signing in successful: ','color: dark-blue; font-size: 20px');
+        } else if (checkUser.isUser && checkUser.errType) {
+            alert(`Could not sign in because: ${checkUser.errType}`)
+        } else {
+            alert(`${checkUser?.message}`);
         }
     }
     return ( 
@@ -47,7 +51,9 @@ const SignIn = () => {
                     </div>
                 </form>
                 <div>
-                    <button>Sign up</button>
+                    <button>
+                        <Link to='/signup'>Sign up</Link>
+                    </button>
                 </div>
             </section>
         </div>

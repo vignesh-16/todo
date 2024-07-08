@@ -48,7 +48,28 @@ user.post('/isuser', async (req,res)=>{
         console.log('for post: ',req.body);
         let userEmail = req.body.emailId;
         let result = await users.findOne({ email : userEmail });
-        res.json(result); 
+        if(!result?.email) {
+            console.info('No user found with the provided mail id: ');
+            res.status(404).json({
+                isUser: false,
+                errType: 'User not found',
+                message: 'Could not find any account which matches with the provided email id',
+            })
+        } else {
+            if (result?.password === req.body.password) {
+                res.status(200).json({
+                    isUser: true,
+                    message: 'Account with matching credentials found!',
+                    user: result
+                })
+            } else {
+                res.status(401).json({
+                    isUser: true,
+                    errType: 'Invalid password',
+                    message: 'Log-in Id or Password does not match.'
+                })
+            }
+        } 
     } catch (err) {
         console.log('Error: while searching for user:',err);
         res.status(500).send('Server Error')

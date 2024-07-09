@@ -15,10 +15,11 @@ const SignIn = () => {
         e.preventDefault();
         let userDetails = { emailId : email, password: pass };
         let checkUser = await signUserIn(userDetails);
-        console.log('%c valid user: ','color: dark-blue; font-size: 20px', checkUser);
+        console.log('%c valid user: ','color: dark-blue; font-size: 20px', checkUser?.user);
         if(checkUser.isUser && !checkUser.errType) {
             let username = checkUser?.user?.firstname?.toLowerCase();
             sessionStorage.setItem('username', username);
+            sessionStorage.setItem('userId', checkUser?.user?._id);
             console.log('%c Session set signing user in: ','color: dark-blue; font-size: 20px');
             let route = 'users/'+username+'/todo'
             console.log('username: ',username,' route: ',route)

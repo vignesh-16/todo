@@ -15,3 +15,5 @@ YourModel.find({}, (err, docs) => {
 
     res.json(transformedDocs);
 });
+
+// _id: { type: String, required: true },

@@ -8,7 +8,8 @@ import usePut from './usePut';
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
-    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getTasks');
+    const userId = sessionStorage.getItem('userId');
+    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch(`http://localhost:3003/api/tasks/getTasks/${userId}`);
     const addCall = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
     const updateCall = usePut('http://localhost:3003/api/tasks/markCompleted');
@@ -28,7 +29,7 @@ const Todo = () => {
             } 
         })
         if(! taskExists) {
-            const newTask = { _id: tasks.length + 1, value: newTaskValue, isCompleted: false, isSelected: false };
+            const newTask = { _id: tasks.length + 1, value: newTaskValue, isCompleted: false, isSelected: false, byUser: userId };
             let response = await addCall(newTask);
             if(response.value === newTaskValue) {
                 setTasks([...tasks, newTask]);

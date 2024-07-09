@@ -5,12 +5,13 @@ const Task = require('../model/Tasks');
 // @route   GET api/tasks/getTasks
 // @desc    Get pending tasks
 // @access  Public
-router.get('/getTasks', async (req, res) => {
+router.get('/:id/getTasks', async (req, res) => {
   try {
-    const tasks = await Task.find({ isCompleted : false });
+    let id = req.params.id;
+    const tasks = await Task.find({ byUser: id, isCompleted : false });
     res.json(tasks);
   } catch (err) {
-    console.error(err.message);
+    console.error(`Error: from '/getTasks' end point`,err.message);
     res.status(500).send('Server Error');
   }
 });
@@ -20,12 +21,13 @@ router.get('/getTasks', async (req, res) => {
 // @access  Public
 router.post('/addTask', async (req, res) => {
   try {
-    const { _id, value, isCompleted } = req.body;
-    const newTask = new Task({ _id, value, isCompleted });
+    console.log(':::::: /addTask req: ',JSON.stringify(req.body))
+    const { value, isCompleted, byUser } = req.body;
+    const newTask = new Task({ value, isCompleted, byUser });
     const task = await newTask.save();
     res.json(task);
   } catch (err) {
-    console.error('Server Error: ',err);
+    console.error(`Error: from '/addTask' end point: `,err);
     res.status(500).send('Server Error');
   }
 });
@@ -38,8 +40,10 @@ router.get('/getCompletedTasks', async (req, res) => {
     const tasks = await Task.find({ isCompleted : true });
     res.json(tasks);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error(`Error: from '/getCompletedTasks' end point`,err.message);
+    res.status(500).json({
+      message: err.message,
+    });
   }
 });
 
@@ -83,7 +87,7 @@ router.get('/getCompletedTasks', async(req, res)=>{
     const tasks = await Task.find({ isCompleted : false });
     res.json(tasks).message('Successfully fetched completed tasks!');
   } catch (err) {
-    console.error(err.message);
+    console.error(`Error: from '/getCompletedTasks' end point: `,err.message);
     res.status(500).send('Server Error');
   }
 })

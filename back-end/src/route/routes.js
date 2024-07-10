@@ -5,7 +5,7 @@ const Task = require('../model/Tasks');
 // @route   GET api/tasks/getTasks
 // @desc    Get pending tasks
 // @access  Public
-router.get('/:id/getTasks', async (req, res) => {
+router.get('/getTasks/:id', async (req, res) => {
   try {
     let id = req.params.id;
     const tasks = await Task.find({ byUser: id, isCompleted : false });
@@ -21,11 +21,13 @@ router.get('/:id/getTasks', async (req, res) => {
 // @access  Public
 router.post('/addTask', async (req, res) => {
   try {
-    console.log(':::::: /addTask req: ',JSON.stringify(req.body))
     const { value, isCompleted, byUser } = req.body;
     const newTask = new Task({ value, isCompleted, byUser });
     const task = await newTask.save();
-    res.json(task);
+    res.json({
+      isSuccess: true,
+      task: task
+    });
   } catch (err) {
     console.error(`Error: from '/addTask' end point: `,err);
     res.status(500).send('Server Error');
@@ -35,9 +37,9 @@ router.post('/addTask', async (req, res) => {
 // @route   GET api/tasks/getCompletedTasks
 // @desc    Get completed tasks
 // @access  Public
-router.get('/getCompletedTasks', async (req, res) => {
+router.get('/getCompletedTasks/:id', async (req, res) => {
   try {
-    const tasks = await Task.find({ isCompleted : true });
+    const tasks = await Task.find({ isCompleted : true, byUser: req.params.id });
     res.json(tasks);
   } catch (err) {
     console.error(`Error: from '/getCompletedTasks' end point`,err.message);

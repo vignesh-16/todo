@@ -1,7 +1,8 @@
 import useFetch from "./useFetch";
 
 const CompletedTasks = () => {
-    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch('http://localhost:3003/api/tasks/getCompletedTasks');
+    const userId = sessionStorage.getItem('userId');
+    const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch(`http://localhost:3003/api/tasks/getCompletedTasks/${userId}`);
 
     const taskSelected = (e, taskId)=> {
         const updatedTasks = tasks.map((task)=>{

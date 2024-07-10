@@ -31,8 +31,8 @@ const Todo = () => {
         if(! taskExists) {
             const newTask = { _id: tasks.length + 1, value: newTaskValue, isCompleted: false, isSelected: false, byUser: userId };
             let response = await addCall(newTask);
-            if(response.value === newTaskValue) {
-                setTasks([...tasks, newTask]);
+            if(response.isSuccess) {
+                setTasks([...tasks, response.task]);
             } else {
                 console.log('%c Warn: Something went wrong!',response);
             }

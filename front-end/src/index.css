@@ -238,3 +238,17 @@ article div {
 .border-bottom {
   border-bottom: 1px solid #f2f2f2;
 }
+
+.hidden {
+  display: none;
+}
+
+.login-class {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.login-class * {
+  margin: auto;
+}

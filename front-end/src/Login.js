@@ -25,15 +25,20 @@ const Login = () => {
     }
 
     const steps = {
-        email : <input type="email" ref={userInput} placeholder="Enter your email" required></input>,
-        pass : <input type="password" ref={passInput} placeholder="Enter your account password" required></input>
+        email : <input type="email" ref={userInput} className="field-input" placeholder="Enter your email" required></input>,
+        pass : <input type="password" ref={passInput} className="field-input" placeholder="Enter your account password" required></input>
     }
 
     return ( 
         <section className="login-class">
-            { steps[userAction] }
+            <div className="field-input-container">
+                <span className={`back-arrow ${userAction === 'email' ? '': ''}`} onClick={ (e)=>{ console.log('Click event received!') } } >
+                    <img src="./resources/left-arrow.png" alt="back-arrow"></img>
+                </span>
+                { steps[userAction] }
+            </div>
             <div className="user-actions">
-                <button className={`go-back ${userAction === 'email' ? 'hidden': ''}`} onClick={ (e)=> { console.log('Back to email') } }>Back</button>
+                {/* <button className={`go-back ${userAction === 'email' ? 'hidden': ''}`} onClick={ (e)=> { console.log('Back to email') } }>Back</button> */}
                 <button type="submit" onClick={ (e)=>{ jumpToNext() } } className="go-next" >{label}</button>
             </div>
         </section>

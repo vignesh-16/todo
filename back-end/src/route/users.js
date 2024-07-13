@@ -56,19 +56,11 @@ user.post('/isuser', async (req,res)=>{
                 message: 'Could not find any account which matches with the provided email id',
             })
         } else {
-            if (result?.password === req.body.password) {
-                res.status(200).json({
-                    isUser: true,
-                    message: 'Account with matching credentials found!',
-                    user: result
-                })
-            } else {
-                res.status(401).json({
-                    isUser: true,
-                    errType: 'Invalid password',
-                    message: 'Log-in Id or Password does not match.'
-                })
-            }
+            res.status(200).json({
+                isUser: true,
+                message: 'Account with matching credentials found!',
+                user: result
+            })
         } 
     } catch (err) {
         console.log('Error: while searching for user:',err);

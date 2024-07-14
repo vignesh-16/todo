@@ -1,8 +1,8 @@
 import { Route, Switch  } from "react-router-dom";
-import Todo from "./Todo";
+import Todo from "./components/Todo";
 import Home from "./Home";
-import Profile from "./Profile";
-import CompletedTasks from "./CompletedTasks";
+import Profile from "./components/Profile";
+import CompletedTasks from "./components/CompletedTasks";
 
 const UsersRoute = () => {
     return ( 

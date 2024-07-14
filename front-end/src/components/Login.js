@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import usePost from "./usePost";
-import back from './resources/left-arrow.png';
+import usePost from "../customhooks/usePost";
+import back from '../resources/left-arrow.png';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {

@@ -1,4 +1,4 @@
-import useFetch from "./useFetch";
+import useFetch from "../customhooks/useFetch";
 
 const CompletedTasks = () => {
     const userId = sessionStorage.getItem('userId');

@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
-import useFetch from './useFetch';
-import usePost from './usePost';
-import useDelete from './useDelete';
-import usePut from './usePut';
+import useFetch from '../customhooks/useFetch';
+import usePost from '../customhooks/usePost';
+import useDelete from '../customhooks/useDelete';
+import usePut from '../customhooks/usePut';
 
 const Todo = () => {
     const taskInput = useRef(null)

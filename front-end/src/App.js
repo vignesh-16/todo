@@ -2,6 +2,7 @@ import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import UsersRoute from './UsersRoute';
 import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
                 < Login />
               </Route>
               <Route exact path="/signup">
-                {/* < SignUp /> */}
+                < Signup />
               </Route>
               <Route path="/users/">
                 <UsersRoute />

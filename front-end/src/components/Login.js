@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import usePost from "../customhooks/usePost";
 import back from '../resources/left-arrow.png';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {
     
     const [ userAction, setUserAction ] = useState('email');
-    const [ label, setLabel ] = useState('Next')
+    const [ label, setLabel ] = useState('Next');
+    const [ help, setHelp ] = useState('Create account');
     const [ userInput, setUserInput ] = useState('');
     const [ notValid, setNotValid ] = useState(false);
     const [ user, setUser ] = useState({});
@@ -16,8 +17,10 @@ const Login = () => {
     useEffect(()=>{
         if (userAction === 'email') {
             setLabel('Next');
+            setHelp('Create account');
         } else {
-            setLabel('Sign in')
+            setLabel('Sign in');
+            setHelp('Forgot password?');
         }
     },[userAction])
 
@@ -38,7 +41,8 @@ const Login = () => {
         } else {
             console.log(`%c Hi.. here is the password: ${userInput}\n ${JSON.stringify(user)}`,'color: teal; font-size: 15px');
             if(user?.password === userInput) {
-                let toRoute = 'users/'+sessionStorage.getItem('username')+'/todo'
+                let toRoute = 'users/'+sessionStorage.getItem('username')+'/todo';
+                sessionStorage.setItem('loggedin',true);
                 login.push(toRoute)
             } else {
                 setNotValid(true)
@@ -53,6 +57,15 @@ const Login = () => {
     const jumpBack =()=>{
         setUserAction('email');
         setLabel('Next')
+        setHelp('Create account');
+    }
+
+    const getPage = ()=>{
+        if(help === 'Create account') {
+            login.push('/signup');
+        } else {
+            login.push('/resetPassword')
+        }
     }
 
     const steps = {
@@ -72,7 +85,7 @@ const Login = () => {
                 </input>
     }
 
-    return ( 
+    return (  
         <section className="login-class">
             <div className="field-input-container">
                 <span className={`back-arrow-holder`} onClick={ (e)=>{ console.log('Click event received!'); jumpBack() } } >
@@ -83,6 +96,11 @@ const Login = () => {
                 </span>
             </div>
             <div className="user-actions">
+                <span onClick={ (e)=>{ getPage() } } className={`user-help`}>
+                    <Link to={''}>
+                        {help}
+                    </Link>
+                </span>
                 <button type="submit" onClick={ (e)=>{ jumpToNext() } } className="go-next" >{label}</button>
             </div>
         </section>

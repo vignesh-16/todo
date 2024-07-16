@@ -194,7 +194,7 @@
   border: none;
   border-radius: 1em;
   height: 50%;
-  width: 65%;
+  width: 20%;
 }
 
 .field-input-container {
@@ -308,5 +308,75 @@
   border: none;
   border-radius: 1em;
   height: 70%;
-  width: 35%;
+  width: 33%;
+}
+
+.arrow-holder {
+  display: flex;
+  justify-content: flex-start;
+  height: max-content;
+  transition: transform 0.3s ease;
+}
+
+.arrow-holder :hover {
+  position: relative;
+  transform: scale(1.1);
+  box-shadow: 1px 2px 10px 4px gainsboro;
+  border-radius: 50%;
+}
+
+.go-back {
+  height: 1.1em;
+  width: 1.1em;
+  margin-top: 9px;
+  margin-left: 9px;;
+}
+
+.stage-header {
+  display: flex;
+  margin: auto;
+  margin-top: 2em;
+}
+
+.signup-field-input-container {
+  display: flex;
+  flex-direction: column;
+  margin: 10% 9% 1% 9%;
+}
+
+.signup-field-input-container input{
+  height: 3em;
+  margin-bottom: 9%;
+}
+
+.user-name-division {
+  display: flex;
+  justify-content: space-between;
+  input {
+    width: 50%;
+  }
+}
+
+.signup-user-actions {
+  display: flex;
+  height: 30%;
+  align-items: end;
+  margin-left: 83%;
+  margin-bottom: 3%;
+  margin-right: 3%;
+  button {
+    height: 3em;
+    width: 12em;
+    background-color: #007bff;
+    border-radius: 3px;
+    border: none;
+    color: white
+  }
+}
+
+.signup-user-actions button:hover {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  cursor: pointer;
 }

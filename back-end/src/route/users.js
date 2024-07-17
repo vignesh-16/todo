@@ -66,6 +66,24 @@ user.post('/isuser', async (req,res)=>{
         console.log('Error: while searching for user:',err);
         res.status(500).send('Server Error')
     }
+});
+
+user.get('/isRegistered/:email',async(req,res)=>{
+    try {
+        let userEmail = req.params.email;
+        let queryResult = await users.findOne({'email' : userEmail});
+        let emailAlreadyRegistered = queryResult?.email ? true : false;
+        res.status(200).json({
+            isExists : emailAlreadyRegistered
+        })
+    } catch (err) {
+        console.error('Error: could not complete email check:',err);
+        res.status(500).json({
+            isServerError : true,
+            message: 'Could not complete the email check',
+            error: err
+        })
+    }
 })
 
 module.exports = user;

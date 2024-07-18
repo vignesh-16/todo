@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import back from '../resources/left-arrow.png';
+import { checkBothString } from '../utils/utility';
 
 const Signup = () => {
     const [ stage, setStage ] = useState('name_email');
@@ -7,6 +8,19 @@ const Signup = () => {
     const [ stageHeader, setStageHeader ] = useState('Welcome to ToDo App!');
     const stageHeaders = ['Welcome to ToDo App!','Verify email address','Set a password'];
     const [ currIndex, setCurrIndex ] = useState(0);
+    const checkEmailExists = async(url)=>{
+        try {
+            const response = await fetch(url);
+            const responseData = await response.json();
+            return responseData;
+        } catch (err) {
+            console.log('Error: while checking email data from backend');
+            console.error(err);
+            return null;
+        }
+    };
+    const [currentStageDatas, setCurrentStageDatas] = useState('');
+
     const allStage = {
         name_email : [
                         <div className="user-name-division" key={1} >
@@ -31,12 +45,26 @@ const Signup = () => {
 
     const processForm = (e)=> {
         e.preventDefault();
-        console.log('Here are the sign-up form data: ',e);
+        console.log('Here are the sign-up form data: ',e?.target);
+        setCurrentStageDatas(e?.target);
+        jumpToNext();
     }
 
-    const jumpToNext = ()=> {
+    const jumpToNext = async()=> {
         if(stage === 'name_email') {
-            setStage('verify_email');
+            let email = currentStageDatas[2]?.value
+            let remail = currentStageDatas[3]?.value;
+            let isSameEmail = checkBothString(email,remail);
+            let checkIfEmailExists = await checkEmailExists(`http://localhost:3003/users/isRegistered/${email}`);
+            if(!isSameEmail) {
+                alert('Please confirm your email!');
+                return;
+            }
+            if (checkIfEmailExists?.isExists) {
+                alert('Entered email is already registered!');
+            } else {
+                setStage('verify_email');
+            }
         } else if (stage === 'verify_email') {
             setStage('set_password');
         } else {
@@ -62,7 +90,7 @@ const Signup = () => {
                 { allStage[stage] }
             </div>
             <div className="signup-user-actions">
-                <button type="submit" onClick={ (e)=>{ jumpToNext() } } className="go-next" >Next</button>
+                <button type="submit" className="go-next" >Next</button>
             </div>
         </form>
      );

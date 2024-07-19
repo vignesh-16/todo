@@ -2,10 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const Tasks = require('./model/Tasks');
-const Users = require('./model/Users');
+const fs = require('fs');
 
 dotenv.config();
+
+const emailConfig = dotenv.parse(fs.readFileSync('.env.email'));
+for (const k in emailConfig) {
+    process.env[k] = emailConfig[k];
+}
+
 const app = express();
 const port = process.env.port || 3001;
 
@@ -28,6 +33,9 @@ app.use('/api/tasks/', generalRoutes);
 
 const userRoutes = require('./route/users');
 app.use('/users/', userRoutes);
+
+const mailRoutes = require('./route/mails');
+app.use('/api/mail/', mailRoutes);
 
 app.listen(port, ()=>{ 
     console.log('App running successfully!');

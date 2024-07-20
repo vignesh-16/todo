@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import back from '../resources/left-arrow.png';
 import { checkBothString } from '../utils/utility';
+import usePost from "../customhooks/usePost";
 
 const Signup = () => {
     const [ stage, setStage ] = useState('name_email');
@@ -8,6 +9,7 @@ const Signup = () => {
     const [ stageHeader, setStageHeader ] = useState('Welcome to ToDo App!');
     const stageHeaders = ['Welcome to ToDo App!','Verify email address','Set a password'];
     const [ currIndex, setCurrIndex ] = useState(0);
+    const sendMail = usePost('http://localhost:3003/api/mail/send');
     const checkEmailExists = async(url)=>{
         try {
             const response = await fetch(url);
@@ -63,7 +65,16 @@ const Signup = () => {
             if (checkIfEmailExists?.isExists) {
                 alert('Entered email is already registered!');
             } else {
-                setStage('verify_email');
+                let sendMailtoUser = await sendMail({
+                    to: email,
+                    subject: 'Verify Todo email',
+                    content: `Here's your otp: 22445`
+                });
+                if (sendMailtoUser.isSuccess) {
+                    setStage('verify_email');
+                } else {
+                    alert('Something went wrong!')
+                }   
             }
         } else if (stage === 'verify_email') {
             setStage('set_password');
@@ -90,7 +101,7 @@ const Signup = () => {
                 { allStage[stage] }
             </div>
             <div className="signup-user-actions">
-                <button type="submit" className="go-next" >Next</button>
+                <button type="submit" className={`go-next`} >Next</button>
             </div>
         </form>
      );

@@ -2,6 +2,7 @@ const express = require('express');
 const user = express.Router();
 const users = require('../model/Users');
 const documentId = require('shortid');
+const bcrypt = require('bcrypt');
 
 // @route   GET users/getusers
 // @desc    get all users
@@ -30,7 +31,9 @@ user.post('/adduser', async(req,res)=>{
             })
         }
         const { firstname, lastname, email, password } = req.body;
-        const newUser = new users({ firstname, lastname, email, password });
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt);
+        const newUser = new users({ firstname, lastname, email, password: hash });
         const userSaved = await newUser.save();
         let newAccount = await users.findOne({ email : req.body.email });
         res.json({

@@ -7,6 +7,6 @@ const usersSchema = new schema({
     firstname: {type: String, required: true},
     lastname: {type: String, required: false},
     admin: {type: Boolean, required: false, default: false}
-})
+},{ timestamps: true })
 
 module.exports = mongoose.model('Users', usersSchema)

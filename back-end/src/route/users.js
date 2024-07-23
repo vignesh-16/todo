@@ -3,6 +3,12 @@ const user = express.Router();
 const users = require('../model/Users');
 const documentId = require('shortid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const createToken = async(id)=>{
+    let token = jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: '5d' });
+    return token;
+}
 
 // @route   GET users/getusers
 // @desc    get all users
@@ -35,10 +41,10 @@ user.post('/adduser', async(req,res)=>{
         const hash = await bcrypt.hash(password, salt);
         const newUser = new users({ firstname, lastname, email, password: hash });
         const userSaved = await newUser.save();
-        let newAccount = await users.findOne({ email : req.body.email });
+        const token = await createToken(userSaved?._id);
         res.json({
-            queryResult: userSaved,
-            userAccount: newAccount,
+            userAccount: userSaved,
+            userToken: token
         });
     } catch (err) {
         console.log('Error: while adding user to db: ',err);

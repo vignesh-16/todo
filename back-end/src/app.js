@@ -6,7 +6,7 @@ const fs = require('fs');
 
 dotenv.config();
 
-const emailConfig = dotenv.parse(fs.readFileSync('.env.email'));
+const emailConfig = dotenv.parse(fs.readFileSync('.env.confid'));
 for (const k in emailConfig) {
     process.env[k] = emailConfig[k];
 }

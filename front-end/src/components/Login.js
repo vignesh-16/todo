@@ -12,7 +12,8 @@ const Login = () => {
     const [ notValid, setNotValid ] = useState(false);
     const [ user, setUser ] = useState({});
     const login = useHistory()
-    const checkUserCredentials = usePost('http://localhost:3003/users/isuser')
+    const checkUserCredentials = usePost('http://localhost:3003/users/isuser');
+    const authUser = usePost('http://localhost:3003/users/login')
 
     useEffect(()=>{
         if (userAction === 'email') {
@@ -34,14 +35,16 @@ const Login = () => {
                 setUserInput('');
                 let username = ValidateUser?.user?.firstname?.toLowerCase();
                 sessionStorage.setItem('username', username);
-                sessionStorage.setItem('userId', ValidateUser?.user?._id);
             } else {
                 setNotValid(true)
             }
         } else {
             console.log(`%c Hi.. here is the password: ${userInput}\n ${JSON.stringify(user)}`,'color: teal; font-size: 15px');
-            if(user?.password === userInput) {
+            let userAuth = await authUser({email: user?.email, password: userInput})
+            if(userAuth?.isAuthenticated) {
                 let toRoute = 'users/'+sessionStorage.getItem('username')+'/todo';
+                sessionStorage.setItem('userId', user?._id);
+                sessionStorage.setItem('token', user?.userToken)
                 sessionStorage.setItem('loggedin',true);
                 login.push(toRoute)
             } else {

@@ -28,7 +28,7 @@ user.get('/getusers', async(req, res)=>{
 // @access  Public
 user.post('/adduser', async(req,res)=>{
     try{
-        console.log('for post: ',req.body);
+        console.log('to /adduser: ',req.body);
         let userExists = await users.find({  email : req.body.email })
         if (userExists?.[0]?.email) {
             return res.status(409).json({
@@ -54,7 +54,7 @@ user.post('/adduser', async(req,res)=>{
 
 user.post('/isuser', async (req,res)=>{
     try {
-        console.log('for post: ',req.body);
+        console.log('check /isuser: ',req.body);
         let userEmail = req.body.emailId;
         let result = await users.findOne({ email : userEmail });
         if(!result?.email) {
@@ -90,6 +90,32 @@ user.get('/isRegistered/:email',async(req,res)=>{
         res.status(500).json({
             isServerError : true,
             message: 'Could not complete the email check',
+            error: err
+        })
+    }
+})
+
+user.post('/login', async(req,res)=>{
+    try {
+        const { email, password } = req.body;
+        let profile = await users.findOne({ email : email });
+        let match = bcrypt.compare(profile?.password, password);
+        if(!match) {
+            res.status(401).json({
+                isAuthenticated: false,
+                message: 'Provided password is not valid!',
+            })
+        }
+        const token = await createToken(profile?._id);
+        res.status(200).json({
+            isAuthenticated: true,
+            _id: profile?._id,
+            userToken: token
+        })
+    } catch (err) {
+        res.status(500).json({
+            isAuthenticated: false,
+            message: 'Could not validate user password',
             error: err
         })
     }

@@ -87,8 +87,6 @@ const Todo = () => {
             <div className="add-task">
                 <input type="text" placeholder="Enter a task" ref={taskInput}></input>
                 <button onClick={(e)=>addTask(e)} >Add</button>
-                <button onClick={()=>markCompleted()} >Done</button>
-                <button onClick={(e)=>{ deleteSelected(e) }} >Delete</button>
             </div>
 
             <div className='tasks-container'>
@@ -100,6 +98,14 @@ const Todo = () => {
                         <div className="task" key={task._id}>
                             <input type="checkbox" onChange={(e)=>taskSelected(e, task._id)} checked={task.isSelected}></input>
                             <span className={task.isCompleted ? 'completed': ''}>{task.value}</span>
+                            { 
+                                task.isSelected && 
+                                <span className='task-status-options'>
+                                    <button onClick={()=>markCompleted()}>Done</button>
+                                    <button onClick={(e)=>{ deleteSelected(e)}}>Delete</button>
+                                    <button onClick={ ()=>{} }>Share</button>
+                                </span>
+                            }
                         </div>
                     ))
                 }

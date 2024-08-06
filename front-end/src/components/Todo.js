@@ -8,7 +8,7 @@ import usePut from '../customhooks/usePut';
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
-    const userId = sessionStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch(`http://localhost:3003/api/tasks/getTasks/${userId}`);
     const addCall = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');

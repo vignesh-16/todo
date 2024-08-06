@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const MoreOptions = () => {
 
-    let user = sessionStorage.getItem('username');
+    let user = localStorage?.getItem('username');
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = ()=> {
@@ -22,7 +22,7 @@ const MoreOptions = () => {
                     <ul className="options-menu">
                         <li className="border-bottom"><Link to={`/users/${user}/profile`}>Profile</Link></li>
                         <li className="border-bottom"><Link to={`/users/${user}/completedTasks`}>Previous Tasks</Link></li>
-                        <li><Link to={`/`} onClick={ ()=>{ sessionStorage.removeItem('token'); sessionStorage.removeItem('username'); sessionStorage.removeItem('loggedin'); } } >Sign Out</Link></li>
+                        <li><Link to={`/`} onClick={ ()=>{ localStorage.removeItem('token'); localStorage.removeItem('username'); localStorage.removeItem('loggedin'); } } >Sign Out</Link></li>
                     </ul>
                 )
             }

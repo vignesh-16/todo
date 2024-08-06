@@ -13,7 +13,15 @@ const Login = () => {
     const [ user, setUser ] = useState({});
     const login = useHistory()
     const checkUserCredentials = usePost('http://localhost:3003/users/isuser');
-    const authUser = usePost('http://localhost:3003/users/login')
+    const authUser = usePost('http://localhost:3003/users/login');
+    const isSignedIn = localStorage.getItem('userId') && localStorage.getItem('token') && localStorage.getItem('loggedin');
+    console.log('%c is signed in user? :: ','color: orange; font-size: 20px', isSignedIn);
+
+    useEffect(() => {
+        if (isSignedIn) {
+            login.push(`/users/${localStorage.getItem('username')}/todo`);
+        }
+    }, [isSignedIn, login]);
 
     useEffect(()=>{
         if (userAction === 'email') {
@@ -34,7 +42,7 @@ const Login = () => {
                 setUser(ValidateUser?.user)
                 setUserInput('');
                 let username = ValidateUser?.user?.firstname?.toLowerCase();
-                sessionStorage.setItem('username', username);
+                localStorage.setItem('username', username);
             } else {
                 setNotValid(true)
             }
@@ -42,10 +50,10 @@ const Login = () => {
             console.log(`%c Hi.. here is the password: ${userInput}\n ${JSON.stringify(user)}`,'color: teal; font-size: 15px');
             let userAuth = await authUser({email: user?.email, password: userInput})
             if(userAuth?.isAuthenticated) {
-                let toRoute = 'users/'+sessionStorage.getItem('username')+'/todo';
-                sessionStorage.setItem('userId', user?._id);
-                sessionStorage.setItem('token', user?.userToken)
-                sessionStorage.setItem('loggedin',true);
+                let toRoute = 'users/'+localStorage.getItem('username')+'/todo';
+                localStorage.setItem('userId', user?._id);
+                localStorage.setItem('token', userAuth?.userToken)
+                localStorage.setItem('loggedin',true);
                 login.push(toRoute)
             } else {
                 setNotValid(true)
@@ -88,25 +96,29 @@ const Login = () => {
                 </input>
     }
 
-    return (  
-        <section className="login-class">
-            <div className="field-input-container">
-                <span className={`back-arrow-holder`} onClick={ (e)=>{ console.log('Click event received!'); jumpBack() } } >
-                    <img className={`back-arrow ${userAction === 'email' ? 'hidden': ''}`} src={back} alt="back-arrow"/>
-                </span>
-                <span className="field-input-holder">
-                    { steps[userAction] }
-                </span>
-            </div>
-            <div className="user-actions">
-                <span onClick={ (e)=>{ getPage() } } className={`user-help`}>
-                    <Link to={''}>
-                        {help}
-                    </Link>
-                </span>
-                <button type="submit" onClick={ (e)=>{ jumpToNext() } } className="go-next" >{label}</button>
-            </div>
-        </section>
+    return (
+        <>
+            {
+                <section className="login-class">
+                    <div className="field-input-container">
+                        <span className={`back-arrow-holder`} onClick={ (e)=>{ console.log('Click event received!'); jumpBack() } } >
+                            <img className={`back-arrow ${userAction === 'email' ? 'hidden': ''}`} src={back} alt="back-arrow"/>
+                        </span>
+                        <span className="field-input-holder">
+                            { steps[userAction] }
+                        </span>
+                    </div>
+                    <div className="user-actions">
+                        <span onClick={ (e)=>{ getPage() } } className={`user-help`}>
+                            <Link to={''}>
+                                {help}
+                            </Link>
+                        </span>
+                        <button type="submit" onClick={ (e)=>{ jumpToNext() } } className="go-next" >{label}</button>
+                    </div>
+            </section>
+            }
+        </>
     );
 }
  

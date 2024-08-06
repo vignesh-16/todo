@@ -3,7 +3,7 @@ import useDelete from "../customhooks/useDelete";
 import usePut from "../customhooks/usePut";
 
 const CompletedTasks = () => {
-    const userId = sessionStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch(`http://localhost:3003/api/tasks/getCompletedTasks/${userId}`);
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
     const updateCall = usePut('http://localhost:3003/api/tasks/markCompleted');

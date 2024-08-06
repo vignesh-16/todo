@@ -7,7 +7,7 @@ console.log('%c here is the useParams: ', 'color: blue; font-size: 30px', usePar
 const Navbar = () => {
     let useLocationHook = useLocation();
     let path = useLocationHook?.pathname;
-    let user = sessionStorage?.getItem('username');
+    let user = localStorage?.getItem('username');
     let location = path.replace('/users/'+user+'/','').replace('/', '');
     if(location === '') {
         location = 'Login';

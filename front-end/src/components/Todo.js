@@ -4,11 +4,13 @@ import useFetch from '../customhooks/useFetch';
 import usePost from '../customhooks/usePost';
 import useDelete from '../customhooks/useDelete';
 import usePut from '../customhooks/usePut';
+import TaskBuilder from './TaskBuilder';
 
 const Todo = () => {
     const taskInput = useRef(null)
     const [taskExists, setTaskExits] = useState(false);
     const userId = localStorage.getItem('userId');
+    const [showModal, setShowModal] = useState(false);
     const { data : tasks, setData : setTasks, isLoading, serverError } = useFetch(`http://localhost:3003/api/tasks/getTasks/${userId}`);
     const addCall = usePost('http://localhost:3003/api/tasks/addTask');
     const deleteCall = useDelete('http://localhost:3003/api/tasks/delete');
@@ -86,7 +88,7 @@ const Todo = () => {
             <h2>Your Tasks</h2>
             <div className="add-task">
                 <input type="text" placeholder="Enter a task" ref={taskInput}></input>
-                <button onClick={(e)=>addTask(e)} >Add</button>
+                <button onClick={(e)=>{ console.log('Event received'); setShowModal(true); console.log('Event called') }} >Add</button>
             </div>
 
             <div className='tasks-container'>
@@ -110,6 +112,8 @@ const Todo = () => {
                     ))
                 }
             </div>
+
+            <TaskBuilder show={showModal} onClose={() => setShowModal(false)} onSave={addTask} />
         </section>
     );
 }

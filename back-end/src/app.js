@@ -1,15 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const fs = require('fs');
-
-dotenv.config();
-
-const emailConfig = dotenv.parse(fs.readFileSync('.env.confid'));
-for (const k in emailConfig) {
-    process.env[k] = emailConfig[k];
-}
+require('dotenv').config({ path: '.env' });
+require('dotenv').config({ path: '.env.confid' });
 
 const app = express();
 const port = process.env.port || 3001;

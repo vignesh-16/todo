@@ -10,4 +10,24 @@ const checkBothString = (value1, value2)=> {
     return caseNeutralized === caseNeutralized2;
 };
 
-export { checkBothString };
+const AddMonthsToDate = (inMonths) => {
+    let monthsToAdd = 1 + inMonths;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + monthsToAdd).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const maxDate = `${year}-${month}-${day}`;
+    console.info('%c max date after adding required months: ','color: maroon', maxDate);
+    return maxDate
+}
+
+const AddYearsFromToday = (inYears) => {
+    const oneYearFromToday = new Date();
+    oneYearFromToday.setFullYear(oneYearFromToday.getFullYear() + 1);
+}
+
+export { 
+    checkBothString,
+    AddMonthsToDate,
+    AddYearsFromToday
+};
